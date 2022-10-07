@@ -25,6 +25,11 @@ class Product extends Component {
         };
     }
 
+    //code inspired by: https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
+    componentWillReceiveProps(nextProps) {
+      this.setState({ price: nextProps.typePrice });
+    }
+
     changeGlaze = event => {
         const newPrice = ((Number(this.props.typePrice) + Number(glazeAdaption[event.target.value])) * Number(sizeAdaption[this.state.size])).toFixed(2);
         this.setState({ glaze: event.target.value, price: newPrice });

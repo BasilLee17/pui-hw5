@@ -144,7 +144,7 @@ h1 {
 }
 
 /* products div container */
-.options {
+#options {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

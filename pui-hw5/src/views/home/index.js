@@ -27,7 +27,7 @@ function Home() {
 
     const [sortResult, setSortResult] = React.useState("name");
 
-    var rollDataPrice = [{
+    const [rollData, setRollData] = React.useState([{
                        imageURL: original,
                        title: "Original cinnamon roll",
                        type: "original",
@@ -62,45 +62,7 @@ function Home() {
                        title: "Strawberry cinnamon roll",
                        type: "strawberry",
                        typePrice: "3.99",
-                      }];
-
-    var rollDataName = [{
-                           imageURL: apple,
-                           title: "Apple cinnamon roll",
-                           type: "apple",
-                           typePrice: "3.49",
-                          },
-                          {
-                             imageURL: chocolate,
-                             title: "Double-chocolate cinnamon roll",
-                             type: "chocolate",
-                             typePrice: "3.99",
-                            },
-                          {
-                           imageURL: original,
-                           title: "Original cinnamon roll",
-                           type: "original",
-                           typePrice: "2.49",
-                          },
-                          {
-                           imageURL: raisin,
-                           title: "Raisin cinnamon roll",
-                           type: "raisin",
-                           typePrice: "2.99",
-                          },
-                          {
-                             imageURL: strawberry,
-                             title: "Strawberry cinnamon roll",
-                             type: "strawberry",
-                             typePrice: "3.99",
-                            },
-                          {
-                           imageURL: walnut,
-                           title: "Walnut cinnamon roll",
-                           type: "walnut",
-                           typePrice: "3.49",
-                          }
-                          ];
+                      }]);
 
     const addToCart = (imageURL, title, type, glaze, size, price) => {
         const newCart = cart.concat({ imageURL, title, type, glaze, size, price});
@@ -124,16 +86,10 @@ function Home() {
         document.querySelector('#itemNum').innerText = "Shopping Cart (" + (cartNum - 1) + " items)";
         document.querySelector('#total').innerText = "Total: $ " + (Number(cartPrice) - Number(cart[id].price)).toFixed(2);
         setCart(newCart);
-        console.log(newCart);
         if (cartNum <= 1) {
             pTagRef.current.innerText = "The cart is empty!";
         }
     }
-
-    /*const addToCart = (type, glaze, size, price) => {
-        const newItem = <CartProduct imageURL={original} type=type glaze=glaze size=size price=price/>
-        const newCart = cart.concat(newItem);
-    }*/
 
     function toggleCart() {
         var element = document.querySelector('#cart');
@@ -151,47 +107,35 @@ function Home() {
     }
 
     function sortClick() {
+        var newProduct = rollData;
+        if (document.querySelector('#sort').value == "name") {
+            newProduct.sort(sortName);
+        } else {
+            newProduct.sort(sortPrice);
+        }
+        setRollData(newProduct);
         setSortResult(document.querySelector('#sort').value);
     }
 
-    /*function renderProducts() {
-      if (sortResult == "name") {
-          rollDataName.map(
-            (roll, idx) => {
-              if (searchResult == null || roll.title.includes(searchResult)) {
-                console.log(roll.type);
-                return (<p>hi</p>)
-                return (<Product
-                key={idx}
-                imageURL={roll.imageURL}
-                title={roll.title}
-                type={roll.type}
-                typePrice={roll.typePrice}
-                addToCart={addToCart} />);
-              } else {
-                return (<div />);
-              }
-            }
-          )
-      } else {
-          rollDataPrice.map(
-            (roll, idx) => {
-              if (searchResult == null || roll.title.includes(searchResult)) {
-                console.log(sortResult);
-                return (<Product
-                key={idx}
-                imageURL={roll.imageURL}
-                title={roll.title}
-                type={roll.type}
-                typePrice={roll.typePrice}
-                addToCart={addToCart} />);
-              } else {
-                return (<div />);
-              }
-            }
-          )
-      }
-    }*/
+    function sortName(a, b) {
+        if (a.title < b.title) {
+            return -1;
+        }
+        if (a.title > b.title) {
+            return 1;
+        }
+        return 0;
+    }
+
+    function sortPrice(a, b) {
+        if (a.typePrice < b.typePrice) {
+            return -1;
+        }
+        if (a.typePrice > b.typePrice) {
+            return 1;
+        }
+        return 0;
+    }
 
     return (
         <>
@@ -251,8 +195,8 @@ function Home() {
             </select>
           </div>
           {/*Products offerred by Bun Bun Shop*/}
-          <div className="options">
-            {rollDataPrice.map(
+          <div id="options">
+            {rollData.map(
              (roll, idx) => {
                if (searchResult == null || roll.title.includes(searchResult)) {
                  return (<Product
