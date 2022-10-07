@@ -7,12 +7,17 @@ import walnut from './assets/walnut-cinnamon-roll.jpg';
 import chocolate from './assets/double-chocolate-cinnamon-roll.jpg';
 import strawberry from './assets/strawberry-cinnamon-roll.jpg';
 import Product from './Product.js';
+import CartProduct from './CartProduct.js';
 import Navigation from './Navigation.js';
 import React, { useRef } from 'react';
 
 function Home() {
 
+    var cartVisible = false;
+
     const pTagRef = useRef();
+
+    const [searchResult, setSearchResult] = React.useState(null);
 
     const [cart, setCart] = React.useState([]);
 
@@ -20,24 +25,173 @@ function Home() {
 
     const [cartNum, setCartNum] = React.useState(0);
 
-    const addToCart = (type, glaze, size, price) => {
-        const newCart = cart.concat({ type, glaze, size, price});
+    const [sortResult, setSortResult] = React.useState("name");
+
+    var rollDataPrice = [{
+                       imageURL: original,
+                       title: "Original cinnamon roll",
+                       type: "original",
+                       typePrice: "2.49",
+                      },
+                      {
+                       imageURL: apple,
+                       title: "Apple cinnamon roll",
+                       type: "apple",
+                       typePrice: "3.49",
+                      },
+                      {
+                       imageURL: raisin,
+                       title: "Raisin cinnamon roll",
+                       type: "raisin",
+                       typePrice: "2.99",
+                      },
+                      {
+                       imageURL: walnut,
+                       title: "Walnut cinnamon roll",
+                       type: "walnut",
+                       typePrice: "3.49",
+                      },
+                      {
+                       imageURL: chocolate,
+                       title: "Double-chocolate cinnamon roll",
+                       type: "chocolate",
+                       typePrice: "3.99",
+                      },
+                      {
+                       imageURL: strawberry,
+                       title: "Strawberry cinnamon roll",
+                       type: "strawberry",
+                       typePrice: "3.99",
+                      }];
+
+    var rollDataName = [{
+                           imageURL: apple,
+                           title: "Apple cinnamon roll",
+                           type: "apple",
+                           typePrice: "3.49",
+                          },
+                          {
+                             imageURL: chocolate,
+                             title: "Double-chocolate cinnamon roll",
+                             type: "chocolate",
+                             typePrice: "3.99",
+                            },
+                          {
+                           imageURL: original,
+                           title: "Original cinnamon roll",
+                           type: "original",
+                           typePrice: "2.49",
+                          },
+                          {
+                           imageURL: raisin,
+                           title: "Raisin cinnamon roll",
+                           type: "raisin",
+                           typePrice: "2.99",
+                          },
+                          {
+                             imageURL: strawberry,
+                             title: "Strawberry cinnamon roll",
+                             type: "strawberry",
+                             typePrice: "3.99",
+                            },
+                          {
+                           imageURL: walnut,
+                           title: "Walnut cinnamon roll",
+                           type: "walnut",
+                           typePrice: "3.49",
+                          }
+                          ];
+
+    const addToCart = (imageURL, title, type, glaze, size, price) => {
+        const newCart = cart.concat({ imageURL, title, type, glaze, size, price});
         setCart(newCart);
         setCartPrice(Number(cartPrice) + Number(price));
         setCartNum(cartNum + 1);
-        console.log(newCart);
-        var text = "Added to cart:\n\n";
-        text += (type + " cinnamon roll\n");
-        text += (glaze + " glazing\n");
-        text += ("Pack of " + size + "\n");
-        text += ("Price: $" + price + "\n\n");
-        pTagRef.current.innerText = text;
-        console.log(text);
-        setTimeout(function () {
-            text = (cartNum + 1) + " item\nTotal: $ " + (Number(cartPrice) + Number(price));
-            pTagRef.current.innerText = text;
-        }, 3000);
+        pTagRef.current.innerText = "";
+        document.querySelector('#itemNum').innerText = "Shopping Cart (" + (cartNum + 1) + " items)";
+        document.querySelector('#total').innerText = "Total: $ " + (Number(cartPrice) + Number(price)).toFixed(2);
     }
+
+    const removeFromCart = (id) => {
+        var newCart = [];
+        for (var i=0; i<cart.length; i++) {
+            if (i != id) {
+                newCart.push(cart[i]);
+            }
+        }
+        setCartPrice(Number(cartPrice) - Number(cart[id].price));
+        setCartNum(cartNum - 1);
+        document.querySelector('#itemNum').innerText = "Shopping Cart (" + (cartNum - 1) + " items)";
+        document.querySelector('#total').innerText = "Total: $ " + (Number(cartPrice) - Number(cart[id].price)).toFixed(2);
+        setCart(newCart);
+        console.log(newCart);
+        if (cartNum <= 1) {
+            pTagRef.current.innerText = "The cart is empty!";
+        }
+    }
+
+    /*const addToCart = (type, glaze, size, price) => {
+        const newItem = <CartProduct imageURL={original} type=type glaze=glaze size=size price=price/>
+        const newCart = cart.concat(newItem);
+    }*/
+
+    function toggleCart() {
+        var element = document.querySelector('#cart');
+        if(cartVisible) {
+            element.style.display = 'none';
+            cartVisible = false;
+        } else {
+            element.style.display = 'block';
+            cartVisible = true;
+        }
+    }
+
+    function searchClick() {
+        setSearchResult(document.querySelector('#search').value);
+    }
+
+    function sortClick() {
+        setSortResult(document.querySelector('#sort').value);
+    }
+
+    /*function renderProducts() {
+      if (sortResult == "name") {
+          rollDataName.map(
+            (roll, idx) => {
+              if (searchResult == null || roll.title.includes(searchResult)) {
+                console.log(roll.type);
+                return (<p>hi</p>)
+                return (<Product
+                key={idx}
+                imageURL={roll.imageURL}
+                title={roll.title}
+                type={roll.type}
+                typePrice={roll.typePrice}
+                addToCart={addToCart} />);
+              } else {
+                return (<div />);
+              }
+            }
+          )
+      } else {
+          rollDataPrice.map(
+            (roll, idx) => {
+              if (searchResult == null || roll.title.includes(searchResult)) {
+                console.log(sortResult);
+                return (<Product
+                key={idx}
+                imageURL={roll.imageURL}
+                title={roll.title}
+                type={roll.type}
+                typePrice={roll.typePrice}
+                addToCart={addToCart} />);
+              } else {
+                return (<div />);
+              }
+            }
+          )
+      }
+    }*/
 
     return (
         <>
@@ -55,68 +209,64 @@ function Home() {
             </div>
             <div id="top-bar-right">
               <nav>
-                <button id="products">PRODUCTS</button>
-                <div class="dropdown">
-                  <button class="dropbtn">CART</button>
-                  <div class="dropdown-content">
-                    <p ref={pTagRef} id="cart-dropdown"></p>
-                  </div>
-                </div>
+                <button id="products" >PRODUCTS</button>
+                <button onClick={toggleCart} >CART</button>
               </nav>
               <hr />
               <h1>Our hand-made cinnamon rolls</h1>
             </div>
           </div>
+          <div id="cart">
+            <hr className="cartLine"/>
+              <div id="cartHeader">
+                <h2 id="itemNum">Shopping Cart (0 items)</h2>
+                <h2 id="total">Total: $ 0.00</h2>
+              </div>
+              <p ref={pTagRef} id="cart-dropdown">The cart is empty!</p>
+              <div className="options">
+                  {cart.map(
+                   (roll, idx) => {
+                       return (<CartProduct
+                       key={idx}
+                       num={idx}
+                       imageURL={roll.imageURL}
+                       title={roll.title}
+                       type={roll.type}
+                       glaze={roll.glaze}
+                       size={roll.size}
+                       price={roll.price}
+                       removeFromCart={removeFromCart} />);
+                   }
+                 )}
+                </div>
+            <hr className="cartLine"/>
+          </div>
+          <div id="filters">
+            <input id="search"/>
+            <button id="searchBtn" onClick={searchClick}>Search</button>
+            <p id="sortBy">sort by:</p>
+            <select id="sort" name="sorting" onChange={sortClick}>
+              <option value="name">Name</option>
+              <option value="basePrice">Base Price</option>
+            </select>
+          </div>
           {/*Products offerred by Bun Bun Shop*/}
           <div className="options">
-            {/*Original Cinnamon Roll*/}
-            <Product
-                imageURL={original}
-                title="Original cinnamon roll"
-                type="original"
-                typePrice="2.49"
-                addToCart={addToCart}
-            />
-            {/*Apple Cinnamon Roll*/}
-            <Product
-                imageURL={apple}
-                title="Apple cinnamon roll"
-                type="apple"
-                typePrice="3.49"
-                addToCart={addToCart}
-            />
-            {/*Raisin Cinnamon Roll*/}
-            <Product
-                imageURL={raisin}
-                title="Raisin cinnamon roll"
-                type="raisin"
-                typePrice="2.99"
-                addToCart={addToCart}
-            />
-            {/*Walnut Cinnamon Roll*/}
-            <Product
-                imageURL={walnut}
-                title="Walnut cinnamon roll"
-                type="walnut"
-                typePrice="3.49"
-                addToCart={addToCart}
-            />
-            {/*Double Chocolate Cinnamon Roll*/}
-            <Product
-                imageURL={chocolate}
-                title="Double-chocolate cinnamon roll"
-                type="chocolate"
-                typePrice="3.99"
-                addToCart={addToCart}
-            />
-            {/*Strawberry Cinnamon Roll*/}
-            <Product
-                imageURL={strawberry}
-                title="Strawberry cinnamon roll"
-                type="strawberry"
-                typePrice="3.99"
-                addToCart={addToCart}
-            />
+            {rollDataPrice.map(
+             (roll, idx) => {
+               if (searchResult == null || roll.title.includes(searchResult)) {
+                 return (<Product
+                 key={idx}
+                 imageURL={roll.imageURL}
+                 title={roll.title}
+                 type={roll.type}
+                 typePrice={roll.typePrice}
+                 addToCart={addToCart} />);
+               } else {
+                 return (<div />);
+               }
+             }
+           )}
           </div>
         </>
     )

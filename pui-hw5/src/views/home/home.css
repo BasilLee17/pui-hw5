@@ -39,26 +39,6 @@ nav button {
     margin-bottom: 20px;
 }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: block;
-    position: absolute;
-    background-color: white;
-    border-style: groove;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    text-align: left;
-}
-
-#cart-dropdown {
-    font-size: 12px;
-}
-
 #products {
     font-weight: bold;
 }
@@ -69,11 +49,98 @@ hr {
     border: 3px solid black;
 }
 
+/* cart */
+#cart {
+    display: none;
+}
+
+.cartLine {
+    border: 4px solid #7A5D57;
+}
+
+#cartHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    margin-right: 80px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.cart-roll-img {
+    width: 200px;
+    border: 2px solid black;
+}
+
+.cart-roll {
+    font-size: 16px;
+    text-align: center;
+}
+
+.cart-text {
+    margin-left: 40px;
+}
+
+.cart-price {
+    font-weight: bold;
+}
+
+.remove {
+    border: none;
+    text-decoration: underline;
+    margin-top: 0px;
+    font-size: 16px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+.remove:hover {
+    background-color: white;
+}
+
 /* "Our hand-made cinnamon rolls" */
 h1 {
     font-weight: normal;
     text-align: left;
     font-family: Verdana;
+}
+
+/* filters div container */
+#filters {
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#search {
+    height: 20px;
+    width: 300px;
+    margin-left: 75px;
+    border-radius: 5px;
+}
+
+#searchBtn {
+    height: 26px;
+    width: 74px;
+    border: solid 1px black;
+    background-color: lightgray;
+    margin: 0px;
+    font-size: 16px;
+    padding-left: 10px;
+    border-radius: 5px;
+    font-weight: normal;
+}
+
+#sortBy {
+    font-size: 16px;
+    padding-left: 30px;
+    margin: 0px;
+}
+
+#sort {
+    font-weight: bold;
 }
 
 /* products div container */

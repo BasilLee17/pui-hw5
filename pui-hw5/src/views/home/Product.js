@@ -51,17 +51,17 @@ class Product extends Component {
                 <p>Pack Size:</p>
                 {/*Radio button style is from https://codepen.io/w3programmings/pen/zzRKpy */}
                 <div className="sizes">
-                  <input type="radio" id={1 + this.props.type} value="1" defaultValue={1} name={this.props.type} onChange={this.changeSize} defaultChecked="checked" />
-                  <label htmlFor={1 + this.props.type}>1</label>
-                  <input type="radio" id={3 + this.props.type} value="3" defaultValue={3} name={this.props.type} onChange={this.changeSize} />
-                  <label htmlFor={3 + this.props.type}>3</label>
-                  <input type="radio" id={6 + this.props.type} value="6" defaultValue={6} name={this.props.type} onChange={this.changeSize} />
-                  <label htmlFor={6 + this.props.type}>6</label>
-                  <input type="radio" id={12 + this.props.type} value="12" defaultValue={12} name={this.props.type} onChange={this.changeSize} />
-                  <label htmlFor={12 + this.props.type}>12</label>
+                  <input type="radio" id={String(1) + this.props.type} value="1" name={this.props.type} onChange={this.changeSize} defaultChecked="checked" />
+                  <label htmlFor={String(1) + this.props.type}>1</label>
+                  <input type="radio" id={String(3) + this.props.type} value="3" name={this.props.type} onChange={this.changeSize} />
+                  <label htmlFor={String(3) + this.props.type}>3</label>
+                  <input type="radio" id={String(6) + this.props.type} value="6" name={this.props.type} onChange={this.changeSize} />
+                  <label htmlFor={String(6) + this.props.type}>6</label>
+                  <input type="radio" id={String(12) + this.props.type} value="12" name={this.props.type} onChange={this.changeSize} />
+                  <label htmlFor={String(12) + this.props.type}>12</label>
                 </div>
                 <h3 id="original-price">{"$ " + this.state.price}</h3>
-                <button type="button" onClick={() => this.props.addToCart(this.props.type, this.state.glaze, this.state.size, this.state.price)}>
+                <button type="button" onClick={() => this.props.addToCart(this.props.imageURL, this.props.title, this.props.type, this.state.glaze, this.state.size, this.state.price)}>
                   Add to Cart
                 </button>
               </div>
